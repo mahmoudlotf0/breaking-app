@@ -10,3 +10,9 @@ class CharactersLoaded extends CharactersCubitState {
 
   CharactersLoaded(this.characters);
 }
+
+class CharacterQuotesLoaded extends CharactersCubitState {
+  final List<CharacterQuote> quotes;
+
+  CharacterQuotesLoaded(this.quotes);
+}

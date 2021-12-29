@@ -15,7 +15,17 @@ class CharactersWebServices {
   Future<List<dynamic>> getAllCharacters() async {
     try {
       Response response = await dio.get('characters');
-      print(response.data.toString());
+      return response.data;
+    } catch (e) {
+      print(e.toString());
+      return [];
+    }
+  }
+
+  Future<List<dynamic>> getCharacrerQuote(String characterName) async {
+    try {
+      Response response =
+          await dio.get('quote', queryParameters: {'author': characterName});
       return response.data;
     } catch (e) {
       print(e.toString());

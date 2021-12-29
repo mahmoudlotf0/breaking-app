@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:blocappapi/data/models/character_quote.dart';
 import 'package:meta/meta.dart';
 
 import 'package:blocappapi/data/models/characters.dart';
@@ -20,5 +21,12 @@ class CharactersCubitCubit extends Cubit<CharactersCubitState> {
       this.characters = characters;
     });
     return characters;
+  }
+
+  void getCharactersQuotes(String characterName) {
+    charactersRepository.getAllCharactersQuotes(characterName).then((quotes) {
+      // * bbt3t el list ll state 3shan ast5dmha fe UI
+      emit(CharacterQuotesLoaded(quotes));
+    });
   }
 }

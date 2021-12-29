@@ -1,6 +1,13 @@
+import 'dart:math';
+
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:blocappapi/business_logic/cubit/characters_cubit_cubit.dart';
+import 'package:blocappapi/data/models/character_quote.dart';
+import 'package:flutter/material.dart';
+
 import 'package:blocappapi/constans/my_colors.dart';
 import 'package:blocappapi/data/models/characters.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CharacterDetailsScreen extends StatelessWidget {
   final Character character;
@@ -8,6 +15,7 @@ class CharacterDetailsScreen extends StatelessWidget {
       : super(key: key);
   Widget buildSliverAppbar() {
     return SliverAppBar(
+      elevation: 0,
       expandedHeight: 600.0,
       pinned: true,
       stretch: true,
@@ -26,29 +34,39 @@ class CharacterDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget buildCharacterInfo({required String title, required String value}) {
-    return RichText(
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-      text: TextSpan(
-        children: [
-          TextSpan(
-            text: title,
-            style: const TextStyle(
-              color: MyColors.myWhite,
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
+  Widget buildCharacterInfo({
+    required String title,
+    required String value,
+    required double endIndent,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        RichText(
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: title,
+                style: const TextStyle(
+                  color: MyColors.myWhite,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
+              TextSpan(
+                text: value,
+                style: const TextStyle(
+                  color: MyColors.myWhite,
+                  fontSize: 16,
+                ),
+              ),
+            ],
           ),
-          TextSpan(
-            text: value,
-            style: const TextStyle(
-              color: MyColors.myWhite,
-              fontSize: 16,
-            ),
-          ),
-        ],
-      ),
+        ),
+        buildDivider(endIndent),
+      ],
     );
   }
 
@@ -61,8 +79,55 @@ class CharacterDetailsScreen extends StatelessWidget {
     );
   }
 
+  Widget checkIfQuotesAreLoaded(CharactersCubitState state) {
+    if (state is CharacterQuotesLoaded) {
+      return displayRandomQuotesOrEmptySpace(state);
+    }
+    return showLoadingIndicator();
+  }
+
+  Widget displayRandomQuotesOrEmptySpace(state) {
+    var quotes = state.quotes;
+    if (quotes.isNotEmpty) {
+      int randomQuoteIndex = Random().nextInt(quotes.length - 1);
+      return Center(
+        child: DefaultTextStyle(
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontSize: 20,
+            color: MyColors.myWhite,
+            shadows: [
+              Shadow(
+                blurRadius: 7,
+                color: MyColors.myYellow,
+                offset: Offset(0, 0),
+              ),
+            ],
+          ),
+          child: AnimatedTextKit(
+            repeatForever: true,
+            animatedTexts: [
+              FlickerAnimatedText(quotes[randomQuoteIndex].quote),
+            ],
+          ),
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  Widget showLoadingIndicator() {
+    return const Center(
+      child: CircularProgressIndicator(color: MyColors.myYellow),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<CharactersCubitCubit>(context)
+        .getCharactersQuotes(character.name);
+    final sizeWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: MyColors.myGrey,
       body: CustomScrollView(
@@ -78,46 +143,52 @@ class CharacterDetailsScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // TODO: LAW EL ACTOR FE BETTER CALL ONLY DON'T SHOW SEASONS
                       buildCharacterInfo(
                         title: 'Job : ',
                         value: character.jobs.join(' / '),
+                        endIndent: sizeWidth * 0.78,
                       ),
-                      buildDivider(285),
                       buildCharacterInfo(
                         title: 'Appeared In : ',
                         value: character.categoryForTwoSeries,
+                        endIndent: sizeWidth * 0.60,
                       ),
-                      buildDivider(220),
-                      buildCharacterInfo(
-                        title: 'Seasons : ',
-                        value: character.appearanceOfSeasons.join(' / '),
-                      ),
-                      buildDivider(240),
+                      character.appearanceOfSeasons.isEmpty
+                          ? Container()
+                          : buildCharacterInfo(
+                              title: 'Seasons : ',
+                              value: character.appearanceOfSeasons.join(' / '),
+                              endIndent: sizeWidth * 0.67,
+                            ),
                       buildCharacterInfo(
                         title: 'Status : ',
                         value: character.statusIdDeadOrAlive,
+                        endIndent: sizeWidth * 0.72,
                       ),
-                      buildDivider(260),
                       character.betterCallSaulApperance.isEmpty
                           ? Container()
                           : buildCharacterInfo(
                               title: 'Better Call Soul Seasons : ',
                               value:
                                   character.betterCallSaulApperance.join(' / '),
+                              endIndent: sizeWidth * 0.30,
                             ),
-                      character.betterCallSaulApperance.isEmpty
-                          ? Container()
-                          : buildDivider(108),
                       buildCharacterInfo(
                         title: 'Actor/Actress : ',
                         value: character.actorName,
+                        endIndent: sizeWidth * 0.55,
                       ),
-                      buildDivider(200),
+                      const SizedBox(height: 20),
+                      BlocBuilder<CharactersCubitCubit, CharactersCubitState>(
+                        builder:
+                            (BuildContext context, CharactersCubitState state) {
+                          return checkIfQuotesAreLoaded(state);
+                        },
+                      ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 500),
+                const SizedBox(height: 400),
               ],
             ),
           ),

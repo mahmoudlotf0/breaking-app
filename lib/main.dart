@@ -1,3 +1,5 @@
+// * Idea : get data from cubit
+
 import 'package:blocappapi/app_router.dart';
 import 'package:flutter/material.dart';
 
