@@ -1,4 +1,5 @@
 import 'package:blocappapi/business_logic/cubit/characters_cubit_cubit.dart';
+import 'package:blocappapi/data/models/characters.dart';
 import 'package:blocappapi/data/repository/characters_repository.dart';
 import 'package:blocappapi/data/web_serveices/characters_web_services.dart';
 import 'package:flutter/material.dart';
@@ -26,8 +27,10 @@ class AppRouter {
           ),
         );
       case characterDetailsScreen:
+        final Character character = settings.arguments as Character;
         return MaterialPageRoute(
-            builder: (_) => const CharacterDetailsScreen());
+          builder: (_) => CharacterDetailsScreen(character: character),
+        );
     }
   }
 }
