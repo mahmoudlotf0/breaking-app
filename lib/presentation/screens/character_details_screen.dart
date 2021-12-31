@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:blocappapi/business_logic/cubit/characters_cubit_cubit.dart';
-import 'package:blocappapi/data/models/character_quote.dart';
 import 'package:flutter/material.dart';
 
 import 'package:blocappapi/constans/my_colors.dart';
