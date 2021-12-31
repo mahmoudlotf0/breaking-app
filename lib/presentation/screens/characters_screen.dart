@@ -4,6 +4,7 @@ import 'package:blocappapi/data/models/characters.dart';
 import 'package:blocappapi/presentation/widgets/character_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_offline/flutter_offline.dart';
 
 class CharactersScreen extends StatefulWidget {
   const CharactersScreen({Key? key}) : super(key: key);
@@ -164,6 +165,28 @@ class _CharactersScreenState extends State<CharactersScreen> {
     );
   }
 
+  Widget buildNoInternetWidget() {
+    return Center(
+      child: Container(
+        color: Colors.white,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(height: 20),
+            const Text(
+              'can\'t connect .. check internet',
+              style: TextStyle(fontSize: 22, color: MyColors.myGrey),
+            ),
+            const SizedBox(height: 50),
+            Image.asset(
+              'assets/images/offline.png',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -177,7 +200,18 @@ class _CharactersScreenState extends State<CharactersScreen> {
         title: isSearching ? buildSearchField() : buildAppBarTitle(),
         actions: buildAppBarActions(),
       ),
-      body: buildBlocWidget(),
+      body: OfflineBuilder(
+        connectivityBuilder:
+            (BuildContext context, ConnectivityResult value, Widget child) {
+          final bool isConnected = value != ConnectivityResult.none;
+          if (isConnected) {
+            return buildBlocWidget();
+          } else {
+            return buildNoInternetWidget();
+          }
+        },
+        child: showLoadingIndicator(),
+      ),
     );
   }
 }
