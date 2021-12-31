@@ -1,11 +1,11 @@
 import 'dart:math';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:blocappapi/business_logic/cubit/characters_cubit_cubit.dart';
+import '../../business_logic/cubit/characters_cubit_cubit.dart';
 import 'package:flutter/material.dart';
 
-import 'package:blocappapi/constans/my_colors.dart';
-import 'package:blocappapi/data/models/characters.dart';
+import '../../constans/my_colors.dart';
+import '../../data/models/characters.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CharacterDetailsScreen extends StatelessWidget {

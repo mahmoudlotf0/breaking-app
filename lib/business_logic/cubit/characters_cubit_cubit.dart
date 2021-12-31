@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
-import 'package:blocappapi/data/models/character_quote.dart';
+import '../../data/models/character_quote.dart';
 import 'package:meta/meta.dart';
 
-import 'package:blocappapi/data/models/characters.dart';
-import 'package:blocappapi/data/repository/characters_repository.dart';
+import '../../data/models/characters.dart';
+import '../../data/repository/characters_repository.dart';
 
 part 'characters_cubit_state.dart';
 

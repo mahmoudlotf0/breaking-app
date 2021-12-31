@@ -1,6 +1,6 @@
-import 'package:blocappapi/data/models/character_quote.dart';
-import 'package:blocappapi/data/models/characters.dart';
-import 'package:blocappapi/data/web_serveices/characters_web_services.dart';
+import '../models/character_quote.dart';
+import '../models/characters.dart';
+import '../web_serveices/characters_web_services.dart';
 
 class CharactersRepository {
   final CharactersWebServices charactersWebServices;

@@ -1,7 +1,7 @@
-import 'package:blocappapi/business_logic/cubit/characters_cubit_cubit.dart';
-import 'package:blocappapi/constans/my_colors.dart';
-import 'package:blocappapi/data/models/characters.dart';
-import 'package:blocappapi/presentation/widgets/character_item.dart';
+import '../../business_logic/cubit/characters_cubit_cubit.dart';
+import '../../constans/my_colors.dart';
+import '../../data/models/characters.dart';
+import '../widgets/character_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_offline/flutter_offline.dart';

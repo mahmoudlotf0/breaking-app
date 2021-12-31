@@ -1,6 +1,6 @@
-import 'package:blocappapi/constans/my_colors.dart';
-import 'package:blocappapi/constans/strings.dart';
-import 'package:blocappapi/data/models/characters.dart';
+import '../../constans/my_colors.dart';
+import '../../constans/strings.dart';
+import '../../data/models/characters.dart';
 import 'package:flutter/material.dart';
 
 class CharacterItem extends StatelessWidget {

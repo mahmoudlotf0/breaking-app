@@ -1,4 +1,4 @@
-import 'package:blocappapi/constans/strings.dart';
+import '../../constans/strings.dart';
 import 'package:dio/dio.dart';
 
 class CharactersWebServices {
